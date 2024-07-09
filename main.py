@@ -149,3 +149,37 @@ cue = Cue(balls[-1].body.position)
 #დარტყმის ძალის განსაზღვრა
 power_bar = pygame.Surface((10, 20))
 power_bar.fill(RED)
+
+
+#მთავარი ფუნქცია
+run = True
+while run:
+  clock.tick(FPS)
+  space.step(1 / FPS)
+
+  #უკანა ფონის შევსება
+  screen.fill(BG)
+
+  #გამოსახვა სათამაშო მაგისი
+  screen.blit(table_image, (0, 0))
+
+  #ბურთის ჩავარდნის ფუნქციონალი
+  for i, ball in enumerate(balls):
+    for pocket in pockets:
+      ball_x_dist = abs(ball.body.position[0] - pocket[0])
+      ball_y_dist = abs(ball.body.position[1] - pocket[1])
+      ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
+      if ball_dist <= pocket_dia / 2:
+        if i == len(balls) - 1:
+          lives -= 1
+          cue_ball_potted = True
+          ball.body.position = (-100, -100)
+          ball.body.velocity = (0.0, 0.0)
+        else:
+          space.remove(ball.body)
+          balls.remove(ball)
+          potted_balls.append(ball_images[i])
+          ball_images.pop(i)
+
+  for i, ball in enumerate(balls):
+    screen.blit(ball_images[i], (ball.body.position[0] - ball.radius, ball.body.position[1] - ball.radius))
