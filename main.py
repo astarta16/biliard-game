@@ -217,3 +217,22 @@ while run:
     balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
     force = 0
     force_direction = 1
+    
+    
+      #სიცოცხლეების გამოსახვა
+  pygame.draw.rect(screen, BG, (0, SCREEN_HEIGHT, SCREEN_WIDTH, BOTTOM_PANEL))
+  draw_text("LIVES: " + str(lives), font, WHITE, SCREEN_WIDTH - 200, SCREEN_HEIGHT + 10)
+
+  #ჩაგდებული ბურთის ქვემოთა ნაწილზე გამოსახვა
+  for i, ball in enumerate(potted_balls):
+    screen.blit(ball, (10 + (i * 50), SCREEN_HEIGHT + 10))
+
+#თამაშის წაგება
+  if lives <= 0:
+    draw_text("GAME OVER", large_font, WHITE, SCREEN_WIDTH / 2 - 160, SCREEN_HEIGHT / 2 - 100)
+    game_running = False
+
+  #მოგება
+  if len(balls) == 1:
+    draw_text("YOU WIN!", large_font, WHITE, SCREEN_WIDTH / 2 - 160, SCREEN_HEIGHT / 2 - 100)
+    game_running = False
