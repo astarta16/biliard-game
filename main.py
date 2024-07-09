@@ -236,3 +236,18 @@ while run:
   if len(balls) == 1:
     draw_text("YOU WIN!", large_font, WHITE, SCREEN_WIDTH / 2 - 160, SCREEN_HEIGHT / 2 - 100)
     game_running = False
+    
+      #დაკლისებაზე გასროლა და თამაშის გათიშვა
+  for event in pygame.event.get():
+    if event.type == pygame.MOUSEBUTTONDOWN and taking_shot == True:
+      powering_up = True
+    if event.type == pygame.MOUSEBUTTONUP and taking_shot == True:
+      powering_up = False
+    if event.type == pygame.QUIT:
+      run = False
+
+
+#ეკრანის აფდეითი
+  pygame.display.update()
+
+pygame.quit()
