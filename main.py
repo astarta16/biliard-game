@@ -183,3 +183,37 @@ while run:
 
   for i, ball in enumerate(balls):
     screen.blit(ball_images[i], (ball.body.position[0] - ball.radius, ball.body.position[1] - ball.radius))
+
+#შემოწმება ბურთები გაჩერდა თუ არა
+  taking_shot = True
+  for ball in balls:
+    if int(ball.body.velocity[0]) != 0 or int(ball.body.velocity[1]) != 0:
+      taking_shot = False
+
+  if taking_shot == True and game_running == True:
+    if cue_ball_potted == True:
+      balls[-1].body.position = (888, SCREEN_HEIGHT / 2)
+      cue_ball_potted = False
+    mouse_pos = pygame.mouse.get_pos()
+    cue.rect.center = balls[-1].body.position
+    x_dist = balls[-1].body.position[0] - mouse_pos[0]
+    y_dist = -(balls[-1].body.position[1] - mouse_pos[1])
+    cue_angle = math.degrees(math.atan2(y_dist, x_dist))
+    cue.update(cue_angle)
+    cue.draw(screen)
+
+  #სიძლიერის მომატების ფუნქცია
+  if powering_up == True and game_running == True:
+    force += 100 * force_direction
+    if force >= max_force or force <= 0:
+      force_direction *= -1
+    for b in range(math.ceil(force / 2000)):
+      screen.blit(power_bar,
+       (balls[-1].body.position[0] - 30 + (b * 15),
+        balls[-1].body.position[1] + 30))
+  elif powering_up == False and taking_shot == True:
+    x_impulse = math.cos(math.radians(cue_angle))
+    y_impulse = math.sin(math.radians(cue_angle))
+    balls[-1].body.apply_impulse_at_local_point((force * -x_impulse, force * y_impulse), (0, 0))
+    force = 0
+    force_direction = 1
